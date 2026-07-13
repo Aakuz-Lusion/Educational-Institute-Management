@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
@@ -10,9 +9,22 @@ class ClassController extends Controller
     /**
      * Display a listing of the resource.
      */
+    // app/Http/Controllers/Admin/ClassController.php
     public function index()
     {
-        //
+        $classes = Classes::with('sections')->get();
+        return view('admin.classes.index', compact('classes'));
+    }
+    public function store(Request $request)
+    {
+        $request->validate(['name' => 'required|string|unique:classes']);
+        Classes::create($request->all());
+        return back()->with('success', 'Class added.');
+    }
+    public function destroy(Classes $class)
+    {
+        $class->delete();
+        return back()->with('success', 'Class deleted.');
     }
 
     /**
@@ -26,10 +38,6 @@ class ClassController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        //
-    }
 
     /**
      * Display the specified resource.
@@ -58,8 +66,4 @@ class ClassController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        //
-    }
 }

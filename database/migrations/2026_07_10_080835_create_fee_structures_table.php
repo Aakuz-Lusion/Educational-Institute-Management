@@ -9,10 +9,14 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up()
     {
         Schema::create('fee_structures', function (Blueprint $table) {
             $table->id();
+            $table->string('title'); // "Admission Fee", "Monthly Tuition"
+            $table->enum('type', ['admission', 'monthly', 'exam']);
+            $table->decimal('amount', 10, 2);
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }
