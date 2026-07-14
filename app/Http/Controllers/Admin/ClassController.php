@@ -2,68 +2,73 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Classes;
 use Illuminate\Http\Request;
 
 class ClassController extends Controller
 {
     /**
-     * Display a listing of the resource.
      */
-    // app/Http/Controllers/Admin/ClassController.php
     public function index()
     {
         $classes = Classes::with('sections')->get();
         return view('admin.classes.index', compact('classes'));
     }
-    public function store(Request $request)
-    {
-        $request->validate(['name' => 'required|string|unique:classes']);
-        Classes::create($request->all());
-        return back()->with('success', 'Class added.');
-    }
-    public function destroy(Classes $class)
-    {
-        $class->delete();
-        return back()->with('success', 'Class deleted.');
-    }
 
     /**
-     * Show the form for creating a new resource.
      */
     public function create()
     {
-        //
+        return view('admin.classes.create');
     }
 
     /**
-     * Store a newly created resource in storage.
+     *
      */
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function store(Request $request)
     {
-        //
+        try {
+            $request->validate([
+                'name' => 'required|string|max:255|unique:classes,name',
+            ]);
+
+            $class = Classes::create($request->all());
+
+            return redirect()->route('admin.classes.index')
+                ->with('success', 'Class added successfully.');
+        } catch (\Exception $e) {
+            dd($e->getMessage(), $e->getTrace()); // dump the error and trace
+        }
     }
 
     /**
-     * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Classes $class)
     {
-        //
+        return view('admin.classes.edit', compact('class'));
     }
 
     /**
-     * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Classes $class)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255|unique:classes,name,' . $class->id,
+        ]);
+
+        $class->update($request->all());
+
+        return redirect()->route('admin.classes.index')
+            ->with('success', 'Class updated successfully.');
     }
 
     /**
-     * Remove the specified resource from storage.
      */
+    public function destroy(Classes $class)
+    {
+        $class->delete();
+
+        return redirect()->route('admin.classes.index')
+            ->with('success', 'Class deleted successfully.');
+    }
 }
