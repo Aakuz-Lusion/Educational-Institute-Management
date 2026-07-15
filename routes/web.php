@@ -15,8 +15,7 @@ Route::get('/', function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
-    // Role-based dashboard
-    Route::get('/dashboard', function () {
+    Route::get('/', function () {
         $user = auth()->user();
         return match ($user->role) {
             'admin'   => view('admin.dashboard'),
@@ -46,9 +45,7 @@ Route::middleware(['auth', 'verified', 'role:admin'])
         Route::resource('classes', ClassController::class);
         Route::resource('sections', SectionController::class);
 
-        // Fee management (coming later)
-        // Route::resource('fee-structures', FeeStructureController::class);
-        // Route::get('invoices', [InvoiceController::class, 'index'])->name('invoices.index');
+
     });
 
 Route::middleware(['auth', 'verified', 'role:teacher'])

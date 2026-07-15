@@ -1,95 +1,73 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container-fluid">
+    <h1 class="mb-4">Welcome, {{ auth()->user()->name }}!</h1>
+
+    <!-- Stats cards -->
     <div class="row">
-        <div class="col-md-3">
-            <div class="card text-white bg-primary mb-3">
+        <div class="col-md-3 col-sm-6 mb-4">
+            <div class="card text-white bg-primary">
                 <div class="card-body">
-                    <h5 class="card-title">Total Students</h5>
-                    <p class="card-text display-4">{{ \App\Models\Student::count() }}</p>
+                    <div class="display-4">{{ \App\Models\Student::count() }}</div>
+                    <div class="h6">Students</div>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card text-white bg-success mb-3">
+        <div class="col-md-3 col-sm-6 mb-4">
+            <div class="card text-white bg-success">
                 <div class="card-body">
-                    <h5 class="card-title">Total Teachers</h5>
-                    <p class="card-text display-4">{{ \App\Models\Teacher::count() }}</p>
+                    <div class="display-4">{{ \App\Models\Teacher::count() }}</div>
+                    <div class="h6">Teachers</div>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card text-white bg-warning mb-3">
+        <div class="col-md-3 col-sm-6 mb-4">
+            <div class="card text-white bg-warning">
                 <div class="card-body">
-                    <h5 class="card-title">Total Users</h5>
-                    <p class="card-text display-4">{{ \App\Models\User::count() }}</p>
+                    <div class="display-4">{{ \App\Models\User::count() }}</div>
+                    <div class="h6">Total Users</div>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card text-white bg-danger mb-3">
+        <div class="col-md-3 col-sm-6 mb-4">
+            <div class="card text-white bg-danger">
                 <div class="card-body">
-                    <h5 class="card-title">Pending Invoices</h5>
-                    <p class="card-text display-4">{{ \App\Models\FeeInvoice::where('status', 'pending')->count() }}</p>
+                    <div class="display-4">{{ \App\Models\FeeInvoice::where('status', 'pending')->count() }}</div>
+                    <div class="h6">Pending Invoices</div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Additional info -->
     <div class="row mt-4">
-        <div class="col-md-6">
+        <div class="col-lg-6">
             <div class="card">
-                <div class="card-header">
-                    <i class="fas fa-tasks"></i> Quick Actions
-                </div>
+                <div class="card-header">Quick Links</div>
                 <div class="card-body">
-                    <div class="row">
-                        @if(Route::has('admin.users.index'))
-                        <div class="col-md-6">
-                            <a href="{{ route('admin.users.index') }}" class="btn btn-primary btn-block mb-2">Manage Users</a>
-                        </div>
+                    <ul class="list-unstyled">
+                        @if(Route::has('admin.users.create'))
+                            <li><a href="{{ route('admin.users.create') }}"><i class="fas fa-user-plus"></i> Add New User</a></li>
                         @endif
-
-                        @if(Route::has('admin.classes.index'))
-                        <div class="col-md-6">
-                            <a href="{{ route('admin.classes.index') }}" class="btn btn-success btn-block mb-2">Manage Classes</a>
-                        </div>
+                        @if(Route::has('admin.classes.create'))
+                            <li><a href="{{ route('admin.classes.create') }}"><i class="fas fa-plus-circle"></i> Add New Class</a></li>
                         @endif
-
-                        @if(Route::has('admin.fee-structures.index'))
-                        <div class="col-md-6">
-                            <a href="{{ route('admin.fee-structures.index') }}" class="btn btn-warning btn-block mb-2">Manage Fees</a>
-                        </div>
+                        @if(Route::has('admin.sections.create'))
+                            <li><a href="{{ route('admin.sections.create') }}"><i class="fas fa-plus-circle"></i> Add New Section</a></li>
                         @endif
-
-                        @if(Route::has('admin.invoices.index'))
-                        <div class="col-md-6">
-                            <a href="{{ route('admin.invoices.index') }}" class="btn btn-info btn-block mb-2">View Invoices</a>
-                        </div>
-                        @endif
-                    </div>
+                    </ul>
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-lg-6">
             <div class="card">
-                <div class="card-header">
-                    <i class="fas fa-info-circle"></i> System Info
-                </div>
+                <div class="card-header">System Info</div>
                 <div class="card-body">
-                    <ul class="list-group">
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            Laravel Version
-                            <span class="badge bg-primary rounded-pill">{{ app()->version() }}</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            PHP Version
-                            <span class="badge bg-primary rounded-pill">{{ phpversion() }}</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            Logged in as
-                            <span class="badge bg-success rounded-pill">{{ auth()->user()->name }}</span>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Logged in as</span>
+                            <span class="badge bg-success">{{ auth()->user()->name }}</span>
                         </li>
                     </ul>
                 </div>
