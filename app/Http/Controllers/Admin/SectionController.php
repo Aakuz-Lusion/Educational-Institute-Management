@@ -72,7 +72,6 @@ class SectionController extends Controller
      */
     public function destroy(Section $section)
     {
-        // Optionally check if there are students/teachers assigned.
         $section->delete();
 
         return redirect()->route('admin.sections.index')
