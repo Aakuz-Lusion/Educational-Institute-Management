@@ -13,17 +13,12 @@ use App\Http\Controllers\Teacher\HomeworkController as TeacherHomeworkController
 use App\Http\Controllers\Student\HomeworkController as StudentHomeworkController;
 use App\Http\Controllers\Student\InvoiceController;
 
-// ============================================
-// PUBLIC ROUTES
-// ============================================
 
 Route::get('/', function () {
     return view('landing');
 });
 
-// ============================================
-// AUTHENTICATION ROUTES (Breeze)
-// ============================================
+
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', function () {
@@ -41,31 +36,24 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// ============================================
-// ADMIN LOGIN (Custom)
-// ============================================
+
 
 Route::get('/admin/login', [AdminLoginController::class, 'showLoginForm'])->name('admin.login');
 Route::post('/admin/login', [AdminLoginController::class, 'login'])->name('admin.login.post');
 Route::post('/admin/logout', [AdminLoginController::class, 'logout'])->name('admin.logout');
 
-// ============================================
-// TEACHER LOGIN (Custom)
-// ============================================
+
 
 Route::get('/teacher/login', [TeacherLoginController::class, 'showLoginForm'])->name('teacher.login');
 Route::post('/teacher/login', [TeacherLoginController::class, 'login'])->name('teacher.login.post');
 
-// ============================================
-// ADMIN ROUTES (Protected)
-// ============================================
+
 
 Route::middleware(['auth', 'role:admin'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
 
-        // Teacher Scheduler Routes
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
         Route::get('/schedule', [AdminController::class, 'schedule'])->name('schedule');
         Route::get('/change-password/{id}', [AdminController::class, 'showChangePassword'])->name('change-password');
@@ -76,26 +64,20 @@ Route::middleware(['auth', 'role:admin'])
         Route::get('/schedule/clear', [AdminController::class, 'clearSchedules'])->name('schedule.clear');
         Route::get('/schedule/generate/{grade}', [AdminController::class, 'generateGradeSchedule'])->name('schedule.generate-grade');
 
-        // User Management Routes (Existing)
         Route::resource('users', UserController::class);
         Route::get('users/{user}/edit-password', [UserController::class, 'editPassword'])->name('users.edit-password');
         Route::put('users/{user}/update-password', [UserController::class, 'updatePassword'])->name('users.update-password');
 
-        // Class & Section Management
         Route::resource('classes', ClassController::class);
         Route::resource('sections', SectionController::class);
     });
 
-// ============================================
-// TEACHER ROUTES (Protected)
-// ============================================
 
 Route::middleware(['auth', 'role:teacher'])
     ->prefix('teacher')
     ->name('teacher.')
     ->group(function () {
 
-        // Teacher Scheduler Dashboard
         Route::get('/dashboard', [TeacherLoginController::class, 'dashboard'])->name('dashboard');
         Route::post('/logout', [TeacherLoginController::class, 'logout'])->name('logout');
         Route::post('/mark-unavailable', [TeacherLoginController::class, 'markUnavailable'])->name('mark-unavailable');
@@ -103,15 +85,11 @@ Route::middleware(['auth', 'role:teacher'])
         Route::get('/profile', [TeacherLoginController::class, 'profile'])->name('profile');
         Route::post('/profile', [TeacherLoginController::class, 'updateProfile'])->name('profile.update');
 
-        // Homework Management (Existing)
         Route::resource('homeworks', TeacherHomeworkController::class);
         Route::get('submissions/{homework}', [TeacherHomeworkController::class, 'submissions'])->name('homeworks.submissions');
         Route::post('submissions/grade/{submission}', [TeacherHomeworkController::class, 'grade'])->name('submissions.grade');
     });
 
-// ============================================
-// STUDENT ROUTES (Protected)
-// ============================================
 
 Route::middleware(['auth', 'role:student'])
     ->prefix('student')
@@ -123,10 +101,6 @@ Route::middleware(['auth', 'role:student'])
         Route::get('invoices', [InvoiceController::class, 'index'])->name('invoices.index');
     });
 
-// ============================================
-// TEACHER MANAGEMENT (Public Routes)
-// ============================================
-
 Route::get('/teachers', [TeacherController::class, 'index'])->name('teachers.index');
 Route::get('/teachers/create', [TeacherController::class, 'create'])->name('teachers.create');
 Route::post('/teachers', [TeacherController::class, 'store'])->name('teachers.store');
@@ -136,16 +110,8 @@ Route::delete('/teachers/{id}', [TeacherController::class, 'destroy'])->name('te
 Route::get('/teachers/search', [TeacherController::class, 'search'])->name('teachers.search');
 Route::get('/teachers/toggle/{id}', [TeacherController::class, 'toggleStatus'])->name('teachers.toggle');
 
-// ============================================
-// TEST ROUTE
-// ============================================
-
 Route::get('/test', function() {
     return 'Hello World!';
 });
-
-// ============================================
-// AUTH ROUTES (Breeze)
-// ============================================
 
 require __DIR__.'/auth.php';
