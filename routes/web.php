@@ -14,10 +14,10 @@ use App\Http\Controllers\Student\HomeworkController as StudentHomeworkController
 use App\Http\Controllers\Student\InvoiceController;
 
 
+// Route::get('/', [NameController::class, 'index'])->name('welcome');
 Route::get('/', function () {
-    return view('landing');
-});
-
+    return view('welcome');
+})->name('welcome');
 
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -45,7 +45,7 @@ Route::post('/admin/logout', [AdminLoginController::class, 'logout'])->name('adm
 
 
 Route::get('/teacher/login', [TeacherLoginController::class, 'showLoginForm'])->name('teacher.login');
-Route::post('/teacher/login', [TeacherLoginController::class, 'login'])->name('teacher.login.post');
+Route::post('/teacher/login', [TeacherLoginControllers::class, 'login'])->name('teacher.login.post');
 
 
 

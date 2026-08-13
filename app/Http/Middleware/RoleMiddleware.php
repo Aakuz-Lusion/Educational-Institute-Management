@@ -21,4 +21,4 @@ class RoleMiddleware
 
         abort(403, 'Unauthorized access.');
     }
-}
+}   
