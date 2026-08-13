@@ -45,7 +45,7 @@ Route::post('/admin/logout', [AdminLoginController::class, 'logout'])->name('adm
 
 
 Route::get('/teacher/login', [TeacherLoginController::class, 'showLoginForm'])->name('teacher.login');
-Route::post('/teacher/login', [TeacherLoginControllers::class, 'login'])->name('teacher.login.post');
+Route::post('/teacher/login', [TeacherLoginController::class, 'login'])->name('teacher.login.post');
 
 
 
